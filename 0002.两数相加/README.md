@@ -38,35 +38,45 @@
 
 ##### 思路
 
-使用哈希表，可以将寻找 target - x 的时间复杂度降低到从O(N)降低到O(1)。
+由于输入的两个链表都是逆序存储数字的位数的，因此两个链表中同一位置的数字可以直接相加。
 
-这样我们创建一个哈希表，对于每一个 x，我们首先查询哈希表中是否存在 target - x，然后将 x 插入到哈希表中，即可保证不会让 x 和自己匹配。
+同时遍历两个链表，逐位计算它们的和，并与当前位置的进位值相加。具体而言，如果当前两个链表处相应位置的数字为 n1,n2，进位值为 carry，则它们的和为 n1+n2+carry；其中，答案链表处相应位置的数字为 (n1+n2+carry)mod10，而新的进位值为(n1+n2+carry)/10。
 
 ##### 代码
 
 ```java
-import java.util.HashMap;
-
 class Solution {
-    // 法二：哈希表法
-    public int[] twoSum(int[] nums, int target) {
-        int[] result = new int[2];
-        int len = nums.length;
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (int i = 0; i < len; i++) {
-            if (map.containsKey(target - nums[i])) {
-                result[0] = map.get(target - nums[i]);
-                result[1] = i;
-                return result;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = null, tail = null;
+        int carry = 0;
+        while (l1 != null || l2 != null) {
+            int num1 = l1 != null ? l1.val : 0;
+            int num2 = l2 != null ? l2.val : 0;
+            int sum = num1 + num2 + carry;
+            if (head == null) {
+                head = tail = new ListNode(sum % 10);
             }
-            map.put(nums[i], i);
+            else {
+                tail.next = new ListNode(sum % 10);
+                tail = tail.next;
+            }
+            carry = sum / 10;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
         }
-        return result;
+        if (carry > 0) {
+            tail.next = new ListNode(carry);
+        }
+        return head;
     }
 }
 ```
 
 ##### 复杂度分析
 
-- 时间复杂度：*O*(n)，对于每一个元素 `x`，我们可以O(1)地寻找 `target - x`。
-- 空间复杂度：O(N)。其中N是数组中的元素数量。主要为哈希表的开销。
+- 时间复杂度：*O*(max(m,n))，其中 m 和 n 分别为两个链表的长度。我们要遍历两个链表的全部位置，而处理每个位置只需要 O(1) 的时间。
+- 空间复杂度：*O*(1)。注意返回值不计入空间复杂度。
