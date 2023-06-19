@@ -99,3 +99,47 @@ class Solution {
 
 - 时间复杂度：O(n^2)，其中 n 是字符串的长度。动态规划的状态总数为O(n^2)，对于每个状态，我们需要转移的时间为O(1)。
 - 空间复杂度：O(n^2)，即存储动态规划状态需要的空间。
+
+#### 方法二：中心扩展算法
+
+##### 思路
+
+可以发现，**所有的状态在转移的时候的可能性都是唯一的**。也就是说，我们可以从每一种边界情况开始「扩展」，也可以得出所有的状态对应的答案。
+
+边界情况即为子串长度为 1 或 2 的情况。我们枚举每一种边界情况，并从对应的子串开始不断地向两边扩展。如果两边的字母相同，我们就可以继续扩展，例如从P(i+1, j-1)扩展到P(i,j)；如果两边的字母不同，我们就可以停止扩展，因为在这之后的子串都不能是回文串了。
+
+##### 代码
+
+```java
+class Solution {
+    // 法二：中心扩展算法
+    public String longestPalindrome(String s) {
+        if (s.length() < 2)
+            return s;
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start + 1) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    public int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1;
+    }
+}
+```
+
+##### 复杂度分析
+
+- 时间复杂度：O(n^2)，其中 n 是字符串的长度。长度为 1 和 2 的回文中心分别有 n 和 n-1 个，每个回文中心最多会向外扩展 O(n) 次。
+- 空间复杂度：O(1)。
