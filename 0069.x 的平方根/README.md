@@ -63,6 +63,8 @@ class Solution {
 
 ##### 思路
 
+**强烈推荐：**https://www.bilibili.com/video/BV17Y411H7Fp/?spm_id_from=333.337.search-card.all.click&vd_source=7f6ba21197bdeac9f512077e3b57e148
+
 ![2](pictures/2.png)
 
 ![3](pictures/3.png)
