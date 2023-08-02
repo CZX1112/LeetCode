@@ -69,7 +69,6 @@
 
 明白了这三种情况，程序就很好写了，遍历每一列，然后分别求出这一列两边最高的墙。找出较矮的一端，和当前列的高度比较，结果就是上边的三种情况。
 
-
 ##### 代码
 
 ```java
@@ -176,3 +175,57 @@ class Solution {
 
 - 时间复杂度：O(N)。
 - 空间复杂度：O(N)。用来保存每一列左边最高的墙和右边最高的墙。
+
+#### 方法三：单调栈
+
+##### 思路
+
+强烈推荐！！！！：https://leetcode.cn/problems/trapping-rain-water/solutions/692342/jie-yu-shui-by-leetcode-solution-tuvc/
+
+https://www.bilibili.com/video/BV1uD4y1u75P/?spm_id_from=333.337.search-card.all.click&vd_source=7f6ba21197bdeac9f512077e3b57e148
+
+![7](pictures/7.png)
+
+##### 代码
+
+```java
+import java.util.Deque;
+import java.util.ArrayDeque;
+
+class Solution {
+    // 法三：单调栈
+    // 要找每个位置左右两个最近的大于当前值位置
+    public int trap(int[] height) {
+        int sum = 0;
+        Deque<Integer> mystack = new ArrayDeque<>();
+        for (int i = 0; i < height.length; i++) {
+            while (!mystack.isEmpty() && height[i] > height[mystack.peek()]) {
+                int mid = mystack.peek();
+                mystack.pop();
+                if (mystack.isEmpty()) {
+                    break;
+                }
+                int left = mystack.peek();
+                int right = i;
+                int h = Math.min(height[right], height[left]) - height[mid];
+                sum += (right - left - 1) * h;
+            }
+            mystack.push(i);
+        }
+        return sum;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        int[] height = {4, 2, 0, 3, 2, 5};
+        int result = solution.trap(height);
+        System.out.println("Output: " + result); // Expected output: 9
+    }
+}
+```
+
+##### 复杂度分析
+
+- 时间复杂度：O(N)。
+- 空间复杂度：O(N)。栈消耗的空间。

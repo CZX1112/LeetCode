@@ -1,3 +1,6 @@
+import java.util.Deque;
+import java.util.ArrayDeque;
+
 class Solution {
     // 法一：按列求和
     // public int trap(int[] height) {
@@ -29,23 +32,45 @@ class Solution {
     // }
 
     // 法二：动态规划（法一的改进）
+    // public int trap(int[] height) {
+    //     int sum = 0;
+    //     int[] max_left = new int[height.length];
+    //     int[] max_right = new int[height.length];
+    //     // 求左边最高列，从左到右
+    //     for (int i = 1; i < height.length - 1; i++) {
+    //         max_left[i] = Math.max(max_left[i - 1], height[i - 1]);
+    //     }
+    //     // 求右边最高列，从右到左
+    //     for (int i = height.length - 2; i >= 0; i--) {
+    //         max_right[i] = Math.max(max_right[i + 1], height[i + 1]);
+    //     }
+    //     for (int i = 1; i < height.length - 1; i++) {
+    //         int min = Math.min(max_left[i], max_right[i]);
+    //         if (min > height[i]) {
+    //             sum += min - height[i];
+    //         }
+    //     }
+    //     return sum;
+    // }
+
+    // 法三：单调栈
+    // 要找每个位置左右两个最近的大于当前值位置
     public int trap(int[] height) {
         int sum = 0;
-        int[] max_left = new int[height.length];
-        int[] max_right = new int[height.length];
-        // 求左边最高列，从左到右
-        for (int i = 1; i < height.length - 1; i++) {
-            max_left[i] = Math.max(max_left[i - 1], height[i - 1]);
-        }
-        // 求右边最高列，从右到左
-        for (int i = height.length - 2; i >= 0; i--) {
-            max_right[i] = Math.max(max_right[i + 1], height[i + 1]);
-        }
-        for (int i = 1; i < height.length - 1; i++) {
-            int min = Math.min(max_left[i], max_right[i]);
-            if (min > height[i]) {
-                sum += min - height[i];
+        Deque<Integer> mystack = new ArrayDeque<>();
+        for (int i = 0; i < height.length; i++) {
+            while (!mystack.isEmpty() && height[i] > height[mystack.peek()]) {
+                int mid = mystack.peek();
+                mystack.pop();
+                if (mystack.isEmpty()) {
+                    break;
+                }
+                int left = mystack.peek();
+                int right = i;
+                int h = Math.min(height[right], height[left]) - height[mid];
+                sum += (right - left - 1) * h;
             }
+            mystack.push(i);
         }
         return sum;
     }
