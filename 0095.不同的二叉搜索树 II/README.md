@@ -1,4 +1,4 @@
-# [95.不同的二叉搜索树 II](https://leetcode.cn/problems/restore-ip-addresses/)
+# [95.不同的二叉搜索树 II](https://leetcode.cn/problems/unique-binary-search-trees-ii/)
 
 `时间：2023.8.6`
 
