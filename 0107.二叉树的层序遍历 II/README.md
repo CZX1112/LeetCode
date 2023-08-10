@@ -1,4 +1,4 @@
-# [0107.二叉树的最大深度](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/)
+# [0107.二叉树的层序遍历 II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/)
 
 `时间：2023.8.10`
 
@@ -27,10 +27,9 @@
 输出：[]
 ```
 
-
 ## 代码
 
-#### 方法：FS广度优先搜索 用队列
+#### 方法：BFS广度优先搜索 用队列
 
 ##### 思路
 
