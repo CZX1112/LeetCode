@@ -46,6 +46,9 @@ class Solution {
         if (divide < r2) {
             root.right = helper(preorder, l1 + divide - l2 + 1, r1, inorder, divide + 1, r2);
         }
+        else {
+            root.right = null;
+        }
         return root;
     }
 }
