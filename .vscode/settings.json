@@ -1,5 +1,5 @@
 {
-    "java.project.sourcePaths": [
-        "0136.只出现一次的数字"
-    ]
+    "files.associations": {
+        "ostream": "cpp"
+    }
 }
